@@ -3,30 +3,57 @@ import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.0
 import QtQuick.Controls.Styles 1.3
 Rectangle {
+    id:mainRect
     width: 400
     height: 462
-    color:Qt.rgba(Math.random())
+    color:Qt.rgba(Math.random(),Math.random(),Math.random(),1.0)
     Row{
         id:col
         width: parent.width
         height: 50
         Button{
             id:addTab
-            width:col.width/2
+            width:col.width/4
             height:50
             text: "添加页面"
             onClicked:{
                 tabview.loadTab();
             }
+            style: ButtonStyle {
+                    background: Rectangle {
+                        implicitWidth: 100
+                        implicitHeight: 25
+                        border.width: control.activeFocus ? 2 : 1
+                        border.color: "#888"
+                        radius: 4
+                        gradient: Gradient {
+                            GradientStop { position: 0 ; color: control.pressed ? "#ccc" : "#eee" }
+                            GradientStop { position: 1 ; color: control.pressed ? "#aaa" : "#ccc" }
+                        }
+                    }
+                }
         }
         Button{
             id:getInfo
-            width:col.width/4
+            width:col.width/2
             height:50
             text:"获取当前页面内容"
             onClicked:{
                 input.text = getCurrentTxt(tabview.currentIndex);
             }
+            style: ButtonStyle {
+                    background: Rectangle {
+                        implicitWidth: 100
+                        implicitHeight: 25
+                        border.width: control.activeFocus ? 2 : 1
+                        border.color: "#888"
+                        radius: 4
+                        gradient: Gradient {
+                            GradientStop { position: 0 ; color: control.pressed ? "#ccc" : "#eee" }
+                            GradientStop { position: 1 ; color: control.pressed ? "#aaa" : "#ccc" }
+                        }
+                    }
+                }
         }
         TextInput{
             id:input
@@ -63,8 +90,8 @@ Rectangle {
         style: TabViewStyle {
                 frameOverlap: 1
                 tab: Rectangle {
-                    color: styleData.selected ? "steelblue" :"lightsteelblue"
-                    border.color:  "steelblue"
+                    color: !styleData.selected ? mainRect.color :"lightsteelblue"
+                    border.color:  mainRect.color
                     implicitWidth: Math.max(text.width + 4, 80)
                     implicitHeight: 20
                     radius: 2
@@ -83,7 +110,7 @@ Rectangle {
                         anchors.topMargin: -4
                     }
                 }
-                frame: Rectangle { color: "steelblue" }
+                frame: Rectangle { color: mainRect.color }
             }
     }
     function setCurrentTxt(index,txt){
